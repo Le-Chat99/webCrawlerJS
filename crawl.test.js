@@ -12,7 +12,18 @@ test("normalize URL", () => {
 });
 
 test("get URL from HTML", () => {
-    expect(getURLsFromHTML(
-        '<html><body><a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a><a href="/bleh/blob">Learn Backend Development</a></body></html>',
-        'https://blog.boot.dev')).toStrictEqual(['https://blog.boot.dev/','https://blog.boot.dev/bleh/blob'])
+    const inputBody =`
+        <html>
+            <body>
+                <a href="https://blog.boot.dev/"><span>Go to Boot.dev</span></a>
+                <a href="/bleh/blob">Learn Backend Development</a>
+                <a href="leh/blob">Invalid</a>
+            </body>
+        </html>
+        `
+    const inputBase ='https://blog.boot.dev'
+    const actual = getURLsFromHTML(inputBody,inputBase)
+    const expected = ["https://blog.boot.dev/", "https://blog.boot.dev/bleh/blob"]
+    expect(actual).toEqual(expected)
+
 })
